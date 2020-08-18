@@ -14,6 +14,12 @@ import br.edu.utfpr.dv.siacoes.model.Department;
 
 public class DepartmentDAO {
 
+	public void closeAllConnections(ResultSet rs, Statement stmt, Connection conn){
+		if((rs != null) && !rs.isClosed()) rs.close();
+		if((stmt != null) && !stmt.isClosed()) stmt.close();
+		if((conn != null) && !conn.isClosed()) conn.close();
+	}
+
 	public Department findById(int id) throws SQLException{
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -36,12 +42,7 @@ public class DepartmentDAO {
 				return null;
 			}
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeAllConnections(rs, stmt, conn);
 		}
 	}
 	
@@ -66,12 +67,7 @@ public class DepartmentDAO {
 			
 			return list;
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeAllConnections(rs, stmt, conn);
 		}
 	}
 	
@@ -96,12 +92,7 @@ public class DepartmentDAO {
 			
 			return list;
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeAllConnections(rs, stmt, conn);
 		}
 	}
 	
@@ -152,12 +143,7 @@ public class DepartmentDAO {
 			
 			return department.getIdDepartment();
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeAllConnections(rs, stmt, conn);
 		}
 	}
 	
