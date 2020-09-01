@@ -13,22 +13,13 @@ import br.edu.utfpr.dv.siacoes.model.ActivityUnit;
 
 public class ActivityUnitDAO {
 
-	public void closeAllConnections(ResultSet rs, Statement stmt, Connection conn){
-		if((rs != null) && !rs.isClosed()) rs.close();
-		if((stmt != null) && !stmt.isClosed()) stmt.close();
-		if((conn != null) && !conn.isClosed()) conn.close();
-	}
-	
+
 	public List<ActivityUnit> listAll() throws SQLException{
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		
-		try{
-			conn = ConnectionDAO.getInstance().getConnection();
-			stmt = conn.createStatement();
-		
-			rs = stmt.executeQuery("SELECT * FROM activityunit ORDER BY description");
+
+		try(Connection conn = ConnectionDAO.getInstance().getConnection();
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM activityunit ORDER BY description");
+			ResultSet rs = stmt.executeQuery()	
+			){
 			
 			List<ActivityUnit> list = new ArrayList<ActivityUnit>();
 			
@@ -37,47 +28,42 @@ public class ActivityUnitDAO {
 			}
 			
 			return list;
-		}finally{
-			closeAllConnections(rs, stmt, conn);
 		}
 	}
 	
 	public ActivityUnit findById(int id) throws SQLException{
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
 		
-		try{
-			conn = ConnectionDAO.getInstance().getConnection();
-			stmt = conn.prepareStatement("SELECT * FROM activityunit WHERE idActivityUnit=?");
 		
+		try(Connection conn = ConnectionDAO.getInstance().getConnection();
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM activityunit WHERE idActivityUnit=?");
+			ResultSet rs = stmt.executeQuery();
+			){
+			
 			stmt.setInt(1, id);
-			
-			rs = stmt.executeQuery();
-			
+
 			if(rs.next()){
 				return this.loadObject(rs);
 			}else{
 				return null;
 			}
-		}finally{
-			closeAllConnections(rs, stmt, conn);
+			
 		}
 	}
 	
 	public int save(int idUser, ActivityUnit unit) throws SQLException{
 		boolean insert = (unit.getIdActivityUnit() == 0);
-		Connection conn = null;
-		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
-		try{
-			conn = ConnectionDAO.getInstance().getConnection();
+		try(Connection conn = ConnectionDAO.getInstance().getConnection();
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO activityunit(description, fillAmount, amountDescription) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS); 
+			PreparedStatement update = conn.prepareStatement("UPDATE activityunit SET description=?, fillAmount=?, amountDescription=? WHERE idActivityUnit=?")
+			){
+			
 			
 			if(insert){
-				stmt = conn.prepareStatement("INSERT INTO activityunit(description, fillAmount, amountDescription) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+				stmt.executeQuery();
 			}else{
-				stmt = conn.prepareStatement("UPDATE activityunit SET description=?, fillAmount=?, amountDescription=? WHERE idActivityUnit=?");
+				update.executeQuery();
 			}
 			
 			stmt.setString(1, unit.getDescription());
@@ -103,8 +89,6 @@ public class ActivityUnitDAO {
 			}
 			
 			return unit.getIdActivityUnit();
-		}finally{
-			closeAllConnections(rs, stmt, conn);
 		}
 	}
 	
