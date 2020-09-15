@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.utfpr.dv.siacoes.model.BugReport;
+import br.edu.utfpr.dv.siacoes.model.Department;
 import br.edu.utfpr.dv.siacoes.model.BugReport.BugStatus;
 import br.edu.utfpr.dv.siacoes.model.Module;
 import br.edu.utfpr.dv.siacoes.model.User;
 
-public class BugReportDAO {
+public class BugReportDAO extends TemplateMethodClass<BugReport>{
 
 	public BugReport findById(int id) throws SQLException{
 		
@@ -125,5 +126,24 @@ public class BugReportDAO {
 		
 		return bug;
 	}
+
+	@Override
+	public List<BugReport> listAll(boolean onlyActive) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BugReport findbyId(int id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int save(int idUser, BugReport unit) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

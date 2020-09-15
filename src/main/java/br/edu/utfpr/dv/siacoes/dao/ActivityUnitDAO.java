@@ -10,8 +10,9 @@ import java.util.List;
 
 import br.edu.utfpr.dv.siacoes.log.UpdateEvent;
 import br.edu.utfpr.dv.siacoes.model.ActivityUnit;
+import br.edu.utfpr.dv.siacoes.model.Department;
 
-public class ActivityUnitDAO {
+public class ActivityUnitDAO extends TemplateMethodClass<ActivityUnit> {
 
 
 	public List<ActivityUnit> listAll() throws SQLException{
@@ -102,5 +103,19 @@ public class ActivityUnitDAO {
 		
 		return unit;
 	}
+
+	@Override
+	public List<ActivityUnit> listAll(boolean onlyActive) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ActivityUnit findbyId(int id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }

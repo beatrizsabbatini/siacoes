@@ -1,18 +1,17 @@
 package br.edu.utfpr.dv.siacoes.dao;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-
 import br.edu.utfpr.dv.siacoes.log.UpdateEvent;
 import br.edu.utfpr.dv.siacoes.model.Department;
 
-public class DepartmentDAO {
+public class DepartmentDAO extends TemplateMethodClass<Department>{
 
 
 	public Department findById(int id) throws SQLException{
@@ -85,7 +84,7 @@ public class DepartmentDAO {
 		
 		try(Connection conn = ConnectionDAO.getInstance().getConnection();
 				PreparedStatement stmt = conn.prepareStatement("INSERT INTO department(idCampus, name, logo, active, site, fullName, initials) VALUES(?, ?, ?, ?, ?, ?, ?)\", Statement.RETURN_GENERATED_KEY");
-				PreparedStatement update = conn.prepareStatement("UPDATE department SET idCampus=?, name=?, logo=?, active=?, site=?, fullName=?, initials=? WHERE idDepartment=?\"")
+				PreparedStatement update = conn.prepareStatement("UPDATE department SET idCampus=?, name=?, logo=?, active=?, site=?, fullName=?, initials=? WHERE idDepartment=?\"");
 				ResultSet rs = stmt.executeQuery()
 				){
 			
@@ -117,7 +116,7 @@ public class DepartmentDAO {
 			
 			if(insert){
 			
-				rs = stmt.getGeneratedKeys();
+				stmt.getGeneratedKeys();
 				
 				if(rs.next()){
 					department.setIdDepartment(rs.getInt(1));
@@ -150,5 +149,19 @@ public class DepartmentDAO {
 		
 		return department;
 	}
+
+	@Override
+	public List<Department> listAll() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Department findbyId(int id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	
 }
